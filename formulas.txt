@@ -1,0 +1,17 @@
+Optical Flow:
+Constraint Equation:
+    I_x * u + I_y * v + I_t = 0 ---> underdetermined system of equations
+    where I_x, I_y, I_t are the gradients of the image in x, y and t directions respectively.
+    The gradients are calculated as follows:
+    I_x = (I(x+1, y) - I(x-1, y)) / 2
+    I_y = (I(x, y+1) - I(x, y-1)) / 2
+    I_t = I(x, y, t+1) - I(x, y, t-1)
+    where I(x, y, t) is the intensity of the image at pixel (x, y) at time t.
+Lucas-Kanade Method:
+Least Squares for Patches W of size nxn:
+    A=[I_x_i, I_y_i] where I_x_i, I_y_i are the spacial gradients (I el of nxn) of the patch W
+    now for each patch we have
+    A * [u, v] = -I_t_i
+    where I_t_i is the temporal gradient of the patch W
+    [u, v] = (A^T * A)^-1 * A^T * -I_t_i
+    where u, v are the optical flow vectors for the patch W
