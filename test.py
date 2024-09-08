@@ -14,6 +14,7 @@ from jax import lax
 import matplotlib.pyplot as plt
 
 from image_gradients import grad_t, grad_x, grad_y
+from lucas_kanade_flow import lucas_canade_flow
 from to_colorful_grayscale import to_colorful_grayscale
 from visualize_optical_flow import visualize_optical_flow
 
@@ -36,7 +37,7 @@ rng_key = jax.random.PRNGKey(0)
 
 img_creation = jax.random.uniform(rng_key, (1010, 1010))
 shift_h = 1
-shift_w = 2
+shift_w = 1
 img0 = img_creation[:1000, :1000]
 img1 = img_creation[shift_h : 1000 + shift_h, shift_w : 1000 + shift_w]
 
@@ -118,7 +119,8 @@ AT_A_inv = jnp.nan_to_num(dangerous_inv)
 print(AT_A_inv.shape)
 ATB = -jnp.stack([I_xI_t_sum, I_yI_t_sum], axis=-1).reshape(H, W, 2)
 print(ATB.shape)
-u_flow = np.einsum("ijkl,ijl->ijk", AT_A_inv, ATB)
+u_flow = jnp.einsum("ijkl,ijl->ijk", AT_A_inv, ATB)
+u_flow = lucas_canade_flow(img0, img1, kernel_size=kernel_size)
 # ATB = jnp.einsum("ijkl,ijl->ijk", AT, B)
 # def matmul(A, B):
 #     return jnp.ma
