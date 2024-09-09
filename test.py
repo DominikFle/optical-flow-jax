@@ -96,7 +96,7 @@ def direct_inverse(A):
 
 
 # ones = jnp.ones(kernel_size)
-kernel_size = (100, 100)  # (Kh,Kw)
+kernel_size = (10, 10)  # (Kh,Kw)
 # print(patchified_sum_pooling(ones, kernel_size=kernel_size))
 I_xI_x_sum, H, W = patchified_sum_pooling(
     I_xI_x, kernel_size=kernel_size, return_num_patches=True
@@ -121,6 +121,8 @@ ATB = -jnp.stack([I_xI_t_sum, I_yI_t_sum], axis=-1).reshape(H, W, 2)
 print(ATB.shape)
 u_flow = jnp.einsum("ijkl,ijl->ijk", AT_A_inv, ATB)
 u_flow = lucas_canade_flow(img0, img1, kernel_size=kernel_size)
+print("uflow max min:", u_flow.max(), u_flow.min())
+print("uflow w h:", u_flow.mean(axis=(0))[0])
 # ATB = jnp.einsum("ijkl,ijl->ijk", AT, B)
 # def matmul(A, B):
 #     return jnp.ma
@@ -147,8 +149,7 @@ plt.imsave(
     uflow_with_arrows,
 )
 
-print("uflow max min:", u_flow.max(), u_flow.min())
-print("uflow w h:", u_flow.mean(axis=(0))[0])
+
 # print(AT_A_inv.max(), AT_A_inv.min())
 # print(AT_A.max(), AT_A.min())
 # print(AT_A_inv[:2, :2])

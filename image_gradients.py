@@ -7,6 +7,9 @@ def grad_x(img, normalize=False, use_2d_filter=True):
     if use_2d_filter:
         grad_filter_x = jnp.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]) / 6
     # grad_filter_x = jnp.array([[-1, 1]]) / 2
+    # if use_2d_filter:
+    #     grad_filter_x = jnp.array([[-1, 1], [-1, 1], [-1, 1]]) / 3
+    # grad_filter_x = jnp.array([[-1, 1]]) / 2
     grad_img_x = jsp.signal.convolve(img, grad_filter_x, mode="same")
     if normalize:
         grad_img_x = grad_img_x + 1 / 2
@@ -17,6 +20,9 @@ def grad_y(img, normalize=False, use_2d_filter=True):
     grad_filter_y = jnp.array([[-1], [0], [1]]) / 2
     if use_2d_filter:
         grad_filter_y = jnp.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]]) / 6
+    # grad_filter_y = jnp.array([[-1], [1]])
+    # if use_2d_filter:
+    #     grad_filter_y = jnp.array([[-1, -1, -1], [1, 1, 1]]) / 3
     # grad_filter_y = jnp.array([[-1], [1]]) / 2
     grad_img_y = jsp.signal.convolve(img, grad_filter_y, mode="same")
     if normalize:
