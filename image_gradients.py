@@ -30,8 +30,8 @@ def grad_y(img, normalize=False, use_2d_filter=True):
     return grad_img_y
 
 
-def grad_t(img0, img1, normalize=False):
-    grad_img_t = (img1 - img0) / 2
+def grad_t(img0, img1, normalize=False, grad_factor=0.5):
+    grad_img_t = (img1 - img0) * grad_factor
     if normalize:
         grad_img_t = grad_img_t + 1 / 2
     return grad_img_t
